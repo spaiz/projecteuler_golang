@@ -1,5 +1,7 @@
 package main
 
+import "math"
+
 /*
 	The prime factors of 13195 are 5, 7, 13 and 29.
 
@@ -16,9 +18,7 @@ func LPF1(num int) int {
 	for i := 1; i*i < num; i++ {
 		if num % i == 0 {
 			if isPrime(i) {
-				if i > max {
-					max = i
-				}
+				max = i
 			}
 		}
 	}
@@ -46,4 +46,33 @@ func isPrime(num int) bool {
 	}
 
 	return true
+}
+
+func LPF2(num int) int {
+	max := 0
+	temp := num
+	for i := 2; i*i < temp; i++ {
+		remainder := num % i
+		if remainder == 0 {
+			num = num / i
+			max = i
+		}
+	}
+
+	return max
+}
+
+func LPF3(num int) int {
+	max := 0
+	root := int(math.Sqrt(float64(num)))
+
+	for i := 2; i < root; i++ {
+		remainder := num % i
+		if remainder == 0 {
+			num /= i
+			max = i
+		}
+	}
+
+	return max
 }
