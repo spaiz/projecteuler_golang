@@ -5,6 +5,7 @@
  - https://projecteuler.net/problem=3
  - https://projecteuler.net/problem=4
  - https://projecteuler.net/problem=5
+ - https://projecteuler.net/problem=6
  
  #### Run benchmark for specific solution
  go test -bench=.
