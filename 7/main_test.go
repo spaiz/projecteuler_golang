@@ -6,8 +6,14 @@ import (
 )
 
 func Test1_Prime_Nst(t *testing.T) {
-	res := Prime_Nst(10001)
+	res := PrimeNst(10001)
 	assert.Equal(t, res, 104743, "they should be equal")
+	t.Logf("\nResult: %d\n", res)
+}
+
+func Test1_Prime_Nst_Sieve(t *testing.T) {
+	res := PrimeSeieve1(10001)
+	assert.Equal(t, 104743, res, "they should be equal")
 	t.Logf("\nResult: %d\n", res)
 }
 
@@ -16,7 +22,15 @@ var result int
 func Benchmark1_Prime_Nst(b *testing.B) {
 	var r int
 	for n := 0; n < b.N; n++ {
-		r = Prime_Nst(100)
+		r = PrimeNst(100)
+	}
+	result = r
+}
+
+func Benchmark1_Prime_Sieve(b *testing.B) {
+	var r int
+	for n := 0; n < b.N; n++ {
+		r = PrimeNst(100)
 	}
 	result = r
 }

@@ -10,7 +10,7 @@ package main
 	https://projecteuler.net/problem=7
 */
 func main() {
-	
+
 }
 
 func isPrime(num int) bool {
@@ -22,12 +22,12 @@ func isPrime(num int) bool {
 		return true
 	}
 
-	if num % 2 == 0 {
+	if num%2 == 0 {
 		return false
 	}
 
 	for i := 3; i*i <= num; i = i + 2 {
-		if num % i == 0 {
+		if num%i == 0 {
 			return false
 		}
 	}
@@ -35,7 +35,7 @@ func isPrime(num int) bool {
 	return true
 }
 
-func Prime_Nst(n int) int {
+func PrimeNst(n int) int {
 	found := 0
 	num := 0
 	i := 1
@@ -49,4 +49,39 @@ func Prime_Nst(n int) int {
 	}
 
 	return num
+}
+
+func PrimeSeieve1(n int) int {
+	const arrSize = 1000000
+	numbers := [arrSize]int{}
+
+	j := 2
+	for i := 0; i < len(numbers); i++ {
+		numbers[i] = j
+		j++
+	}
+
+	for i, p := range numbers {
+		if p == -1 {
+			continue
+		}
+
+		for j := i; j < len(numbers); j += p {
+			if numbers[j] != p {
+				numbers[j] = -1
+			}
+		}
+	}
+
+	found := 0
+	for _, p := range numbers {
+		if p != -1 {
+			found++
+			if found == n {
+				return p
+			}
+		}
+	}
+
+	return -1
 }
