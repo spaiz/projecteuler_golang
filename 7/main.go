@@ -85,3 +85,30 @@ func PrimeSeieve1(n int) int {
 
 	return -1
 }
+
+/*
+	Using indexes as a numbers
+ */
+func PrimeSeieve2(n int) int {
+	const max = 1000000
+	numbers := [max + 3]bool{}
+
+	for i := 2; i*i < len(numbers); i++ {
+		for y := i*i; y <= len(numbers); y += i {
+			numbers[y] = true
+		}
+	}
+
+	nthPrime := 0
+
+	for i := 2; i < len(numbers); i++ {
+		if !numbers[i] {
+			nthPrime++
+			if nthPrime == n {
+				return i
+			}
+		}
+	}
+
+	return -1
+}
