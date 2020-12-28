@@ -45,12 +45,11 @@ func (r AdjResult) String() string {
 }
 
 func AdjGreatestProduct(adj int) *AdjResult {
-
 	maxProduct := 0
 	adjDigits := ""
 
-	for i := 0; i < len(num) - adj; i++ {
-		selected := num[i:i + adj]
+	for i := 0; i < len(num)-adj; i++ {
+		selected := num[i : i+adj]
 
 		res := 1
 		for _, digit := range selected {
@@ -60,9 +59,107 @@ func AdjGreatestProduct(adj int) *AdjResult {
 
 		if maxProduct < res {
 			maxProduct = res
-			adjDigits = string(selected)
+			adjDigits = selected
+		}
+	}
+
+	return &AdjResult{adjDigits}
+}
+
+/*
+	Let's try kind of moving window
+	Sometimes can just divide by previous and multiply by next digits
+	Let's try skipping zeros
+*/
+func AdjGreatestProductSlidingWindow(adj int) *AdjResult {
+	var maxProduct int
+	adjDigits := ""
+
+	window := num[:adj]
+	currentProduct :=  MultiplyDigits(window)
+	maxProduct = currentProduct
+	for i := adj; i < len(num) - adj; i++ {
+		devidor := int(num[i - adj] - 48)
+		multiplier := int(num[i] - 48)
+
+		if devidor != 0 {
+			currentProduct = (currentProduct * multiplier) / devidor
+		} else {
+			currentProduct =  MultiplyDigits(num[i - adj + 1:i+1])
+		}
+
+		if maxProduct < currentProduct {
+			maxProduct = currentProduct
+			adjDigits = num[i - adj +1 :i +1]
 		}
 	}
 
 	return &AdjResult{ adjDigits }
+}
+
+/*
+	Early return in multiply function optimisation
+ */
+func AdjGreatestSkipZeroMultiply(adj int) *AdjResult {
+	var maxProduct int
+	adjDigits := ""
+
+	window := num[:adj]
+	currentProduct := 0
+	for i := 0; i < len(num)-adj; i++ {
+		window = num[i : i+adj]
+		currentProduct = MultiplyDigits(window)
+
+		if maxProduct < currentProduct {
+			maxProduct = currentProduct
+			adjDigits = window
+		}
+	}
+
+	return &AdjResult{adjDigits}
+}
+
+/*
+	Playing with optimizations
+ */
+func AdjGreatestProductSkipZero(adj int) *AdjResult {
+	var maxProduct int
+	adjDigits := ""
+
+	window := num[:adj]
+	currentProduct := 0
+	for i := 0; i < len(num)-adj; i++ {
+		if num[i] == 48 {
+			continue
+		}
+
+		if num[i + adj - 1] == 48 {
+			i += adj
+			continue
+		}
+
+		window = num[i : i+adj]
+		currentProduct = MultiplyDigits(window)
+
+		if maxProduct < currentProduct {
+			maxProduct = currentProduct
+			adjDigits = window
+		}
+	}
+
+	return &AdjResult{adjDigits}
+}
+
+func MultiplyDigits(ascii string) int {
+	res := 1
+	for i := range ascii {
+		if ascii[i] == 48 {
+			return 0
+		}
+
+		number := int(ascii[i] - 48)
+		res *= number
+	}
+
+	return res
 }
