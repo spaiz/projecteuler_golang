@@ -43,15 +43,15 @@ func main() {
 */
 
 type Result struct {
-	x       []int
-	y       []int
+	rows    []int
+	cols    []int
 	product int
 }
 
 /*
 	The idea is to calculate local maximum using a mask,
 	and moving a 1 position right until the end,
-	and then moving down for 1 position and calculating only top row, left column, and 2 diagonals.
+	and then moving down for 1 position and calculating only top rows, left column, and 2 diagonals.
 
 	[1][1][1][1]
 	[1][1][1][0]
@@ -76,53 +76,58 @@ func GreatestProduct1(m [][]int, length int) *Result {
 
 func FindLocalMaximumProduct(m [][]int, i int, j int, length int) *Result {
 	res1 := &Result{
-		x:       make([]int, 0, length),
-		y:       make([]int, 0, length),
+		rows:    make([]int, 0, length),
+		cols:    make([]int, 0, length),
 		product: 1,
 	}
 
 	res2 := &Result{
-		x: make([]int, 0, length),
-		y: make([]int, 0, length),
+		rows:    make([]int, 0, length),
+		cols:    make([]int, 0, length),
 		product: 1,
 	}
 
 	res3 := &Result{
-		x:       make([]int, 0, length),
-		y:       make([]int, 0, length),
+		rows:    make([]int, 0, length),
+		cols:    make([]int, 0, length),
 		product: 1,
 	}
 
 	res4 := &Result{
-		x:       make([]int, 0, length),
-		y:       make([]int, 0, length),
+		rows:    make([]int, 0, length),
+		cols:    make([]int, 0, length),
 		product: 1,
 	}
 
-	if j <= len(m) - length && i <= len(m) - length {
-		for k := i; k < i+length - 1; k++ {
-			res1.x = append(res1.x, j)
-			res1.y = append(res1.y, k)
-			res1.product *= m[j][k]
+	step := 0
+	if j <= len(m) - length && i < len(m) {
+		for k := 0; k < length; k++ {
+			res1.rows = append(res1.rows, i)
+			res1.cols = append(res1.cols, j + step)
+			res1.product *= m[i][j + step]
+			step++
 		}
 	}
 
+	step = 0
 	if j < len(m) && i <= len(m) - length {
-		for k := i; k < i+length; k++ {
-			res2.x = append(res2.x, k)
-			res2.y = append(res2.y, j)
-			res2.product *= m[k][j]
+		for k := 0; k < length; k++ {
+			res2.rows = append(res2.rows, i + step)
+			res2.cols = append(res2.cols, j)
+			res2.product *= m[i + step][j]
+			step++
 		}
 	}
+
 	if res2.product > res1.product {
 		res1 = res2
 	}
 
-	step := 0
+	step = 0
 	if j <= len(m) - length && i <= len(m) - length {
 		for k := i; k < i+length; k++ {
-			res3.x = append(res3.x, k)
-			res3.y = append(res3.y, j +step)
+			res3.rows = append(res3.rows, k)
+			res3.cols = append(res3.cols, j +step)
 			res3.product *= m[k][j +step]
 			step++
 		}
@@ -135,8 +140,8 @@ func FindLocalMaximumProduct(m [][]int, i int, j int, length int) *Result {
 	step = 1
 	if j <= len(m) - length && i <= len(m) - length {
 		for k := i; k < i+length; k++ {
-			res4.x = append(res4.x, k)
-			res4.y = append(res4.y, j+length-step)
+			res4.rows = append(res4.rows, k)
+			res4.cols = append(res4.cols, j+length-step)
 			res4.product *= m[k][j+length-step]
 			step++
 		}
