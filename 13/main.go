@@ -252,7 +252,7 @@ func (n BigNum) Add(bignum *BigNum) *BigNum {
 
 		res := first + second + remember
 		if res >= 10 {
-			newRes = append(newRes, res - 10)
+			newRes = append(newRes, res-10)
 			remember = 1
 		} else {
 			newRes = append(newRes, res)
@@ -272,7 +272,7 @@ func Parse(num string) []int {
 	digits := make([]int, 50, 50)
 	for i, v := range num {
 		integer := v - 48
-		digits[49 - i] = int(integer)
+		digits[49-i] = int(integer)
 	}
 
 	return digits
@@ -301,12 +301,12 @@ func FirstDigitsOfSum2(limit int) string {
 			num += bignum.digits[i]
 		}
 
-		result= fmt.Sprintf("%d%s", num %10, result)
+		result = fmt.Sprintf("%d%s", num%10, result)
 		num = num / 10
 	}
 
 	if num > 0 {
-		result= fmt.Sprintf("%d%s", num, result)
+		result = fmt.Sprintf("%d%s", num, result)
 	}
 
 	return result[:limit]
