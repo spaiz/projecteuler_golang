@@ -292,3 +292,22 @@ func FirstDigitsOfSum() *BigNum {
 
 	return lastSum
 }
+
+func FirstDigitsOfSum2(limit int) string {
+	result := ""
+	num := 0
+	for i := 0; i < len(nums[0].digits); i++ {
+		for _, bignum := range nums {
+			num += bignum.digits[i]
+		}
+
+		result= fmt.Sprintf("%d%s", num %10, result)
+		num = num / 10
+	}
+
+	if num > 0 {
+		result= fmt.Sprintf("%d%s", num, result)
+	}
+
+	return result[:limit]
+}
