@@ -13,6 +13,7 @@
  - https://projecteuler.net/problem=11
  - https://projecteuler.net/problem=12
  - https://projecteuler.net/problem=13
+ - https://projecteuler.net/problem=14
  
  #### Run benchmark for specific solution
  go test -bench=.
